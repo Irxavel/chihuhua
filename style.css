@@ -1,0 +1,279 @@
+/* --- PALETA DE COLORES EXTRAÍDA DE LA IMAGEN --- */
+:root {
+    /* Dorados y Bronces Metálicos */
+    --gold-1: #F0E6D2; /* Brillo pálido */
+    --gold-2: #C8AA6E; /* Dorado principal */
+    --gold-3: #785A28; /* Bronce oscuro/Sombra */
+    --gold-4: #463714; /* Marrón profundo bordes */
+    
+    /* Azules Mágicos (Hextech) */
+    --blue-glow: #0AC8B9;
+    --blue-deep: #005A60;
+    
+    /* Fondos */
+    --bg-void: #010A13; /* Negro azulado profundo */
+    --bg-panel: rgba(5, 13, 20, 0.95);
+    
+    /* Texturas */
+    --gradient-gold: linear-gradient(180deg, #C8AA6E 0%, #785A28 100%);
+    --gradient-btn: linear-gradient(to bottom, #1E2328, #131519);
+    --border-gold: 1px solid var(--gold-2);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+/* Scrollbar personalizado al estilo del cliente */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #05080a; }
+::-webkit-scrollbar-thumb { background: var(--gold-3); border: 1px solid var(--gold-2); }
+
+body {
+    background-color: var(--bg-void);
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    color: var(--gold-1);
+    display: flex; justify-content: center; align-items: center;
+}
+
+/* --- FONDO Y TEXTURAS --- */
+.bg-hextech {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 30%, #151a21 0%, #010A13 80%);
+    z-index: -2;
+}
+.texture-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none; z-index: -1; opacity: 0.3;
+}
+#particles {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNCIgaGVpZ2h0PSI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxjaXJjbGUgY3g9IjIiIGN5PSIyIiByPSIxIiBmaWxsPSIjQzhBQTZFIiBmaWxsLW9wYWNpdHk9IjAuNCIvPjwvc3ZnPg==');
+    opacity: 0.6;
+}
+
+/* --- PANTALLA DE CARGA (LAUNCHER) --- */
+#launcher-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #010A13;
+    z-index: 10000;
+    display: flex; justify-content: center; align-items: center;
+    transition: opacity 0.8s ease;
+}
+.launcher-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+
+/* Corazón Animado */
+.heart-box { position: relative; margin-bottom: 20px; }
+.heart-icon {
+    font-size: 120px; color: transparent;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text; background-clip: text;
+    filter: drop-shadow(0 0 20px rgba(200, 170, 110, 0.6));
+    animation: heartbeat 1.5s infinite;
+}
+.heart-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 100px; height: 100px; background: var(--gold-2);
+    filter: blur(50px); opacity: 0.2; animation: pulse 2s infinite;
+}
+
+.launcher-title {
+    font-family: 'Cinzel', serif; font-size: 3rem; color: var(--gold-1);
+    letter-spacing: 8px; text-shadow: 0 5px 15px rgba(0,0,0,0.8);
+    margin: 0;
+}
+.divider-gold {
+    width: 200px; height: 2px; background: var(--gradient-gold);
+    margin: 15px 0; box-shadow: 0 0 10px var(--gold-2);
+}
+.launcher-subtitle {
+    color: #888; text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; margin-bottom: 40px;
+}
+
+/* --- MARCO PRINCIPAL (CLIENTE) --- */
+#app-container { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 1s; }
+#app-container.visible { opacity: 1; }
+
+.client-frame {
+    position: relative;
+    width: 95%; max-width: 550px;
+    height: 92vh; max-height: 900px;
+    background: var(--bg-panel);
+    backdrop-filter: blur(8px);
+    border: 2px solid var(--gold-4);
+    box-shadow: 0 0 80px rgba(0,0,0,0.9), inset 0 0 100px rgba(0,0,0,0.8);
+    display: flex; justify-content: center; align-items: center;
+    /* Forma recortada elegante */
+    clip-path: polygon(
+        30px 0, 100% 0, 100% calc(100% - 30px), 
+        calc(100% - 30px) 100%, 0 100%, 0 30px
+    );
+}
+
+/* Esquinas Decorativas */
+.deco-corner {
+    position: absolute; width: 40px; height: 40px;
+    border: 2px solid var(--gold-2);
+    z-index: 20; pointer-events: none;
+}
+.top-left { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.top-right { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.bottom-left { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+.bottom-right { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+/* --- PANTALLAS --- */
+.screen {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    padding: 30px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: scale(0.95);
+}
+.screen.active { opacity: 1; visibility: visible; pointer-events: all; transform: scale(1); }
+
+/* --- IMAGEN HERO (ESTILO CARTA DE CAMPEÓN) --- */
+.hero-frame {
+    width: 300px; height: 420px; /* Formato retrato grande */
+    max-width: 80vw; max-height: 50vh;
+    border: 2px solid var(--gold-3);
+    position: relative; padding: 4px;
+    background: linear-gradient(135deg, var(--gold-4), #000);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    margin-bottom: 25px;
+}
+.hero-img {
+    width: 100%; height: 100%; object-fit: cover;
+    border: 1px solid var(--gold-3);
+}
+.frame-border {
+    position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+    border: 1px solid var(--gold-2); opacity: 0.6; pointer-events: none;
+}
+
+/* --- TIPOGRAFÍA --- */
+.title-main {
+    font-family: 'Cinzel', serif; font-size: 2.2rem; text-align: center;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8); margin: 15px 0; line-height: 1.2;
+}
+.highlight-blue { color: var(--blue-glow); -webkit-text-fill-color: var(--blue-glow); text-shadow: 0 0 15px var(--blue-glow); }
+
+.subtitle-gold {
+    font-family: 'Beaufort', sans-serif; color: var(--gold-2);
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;
+}
+.lore-text { color: #aaa; font-style: italic; text-align: center; font-size: 0.95rem; margin-bottom: 30px; padding: 0 20px; }
+
+/* --- BOTONES PREMIUM --- */
+.action-row { display: flex; gap: 20px; justify-content: center; width: 100%; position: relative; margin-top: 10px;}
+.spacer { width: 150px; height: 50px; }
+
+/* Botón Primario (Dorado/Azul Oscuro) */
+.btn-hex-primary {
+    position: relative;
+    background: var(--gradient-btn);
+    border: 2px solid var(--gold-3);
+    color: var(--gold-1);
+    font-family: 'Beaufort', sans-serif; font-weight: bold; font-size: 1rem;
+    padding: 16px 40px; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 2px;
+    min-width: 150px; transition: all 0.3s;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+}
+.btn-hex-primary:hover {
+    border-color: var(--gold-2); color: #fff;
+    box-shadow: 0 0 20px rgba(200, 170, 110, 0.3), inset 0 0 10px rgba(200, 170, 110, 0.1);
+    text-shadow: 0 0 8px var(--gold-2);
+}
+.btn-hex-primary.big { padding: 18px 50px; font-size: 1.1rem; }
+
+/* Botón Peligro (No) */
+.btn-hex-danger {
+    background: #1a0505; color: #ff4d4d; border: 1px solid #5a0000;
+    padding: 16px 40px; position: absolute; z-index: 999;
+    font-family: 'Beaufort', sans-serif; text-transform: uppercase; letter-spacing: 2px;
+    white-space: nowrap; cursor: pointer;
+}
+
+/* Botón Texto */
+.btn-text-gold {
+    background: none; border: none; color: #666; 
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;
+    cursor: pointer; margin-top: 20px; transition: color 0.3s;
+}
+.btn-text-gold:hover { color: var(--gold-2); text-decoration: underline; }
+
+/* Botón Secundario */
+.btn-hex-secondary {
+    background: rgba(0,0,0,0.5); border: 1px solid var(--gold-4); color: #888;
+    padding: 10px 25px; margin-top: 20px; font-size: 0.8rem; text-transform: uppercase; cursor: pointer;
+}
+.btn-hex-secondary:hover { border-color: var(--gold-2); color: var(--gold-2); }
+
+/* --- JUEGO --- */
+.game-layout { display: flex; width: 100%; height: 75%; align-items: center; justify-content: space-between; gap: 10px; }
+.side-panel { width: 20%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.tall-gif { width: 100%; height: 100%; max-height: 450px; object-fit: contain; filter: drop-shadow(0 0 5px var(--blue-glow)); }
+
+.cards-grid { width: 58%; aspect-ratio: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.card {
+    background: rgba(30, 30, 30, 0.6); border: 1px solid var(--gold-3);
+    position: relative; cursor: pointer; transform-style: preserve-3d; transition: transform 0.6s;
+}
+.card:hover { border-color: var(--gold-2); box-shadow: 0 0 15px rgba(200, 170, 110, 0.2); }
+.card.flipped { transform: rotateY(180deg); border-color: var(--gold-1); }
+.card.matched { opacity: 0; pointer-events: none; transform: scale(1.1); transition: 0.5s; }
+
+.face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; }
+.front { background: #080a0c; }
+.back { 
+    background: radial-gradient(#1e2328, #05080a); transform: rotateY(180deg);
+    box-shadow: inset 0 0 10px var(--gold-3);
+}
+
+.footer-game { display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 10px; }
+.status-label { color: var(--blue-glow); font-size: 0.9rem; letter-spacing: 1px; }
+
+/* --- CARTA --- */
+.parchment-box {
+    width: 100%; height: 75%;
+    background: rgba(10, 10, 12, 0.7);
+    border-top: 2px solid var(--gold-3);
+    border-bottom: 2px solid var(--gold-3);
+    padding: 10px; margin-top: 10px;
+}
+.letter-content {
+    width: 100%; height: 100%; overflow-y: auto; text-align: left; padding: 15px;
+    color: var(--gold-1); font-size: 1.1rem; line-height: 1.7;
+    text-shadow: 0 1px 2px #000;
+}
+.typing-cursor { color: var(--gold-2); animation: blink 1s infinite; font-weight: bold; }
+
+/* GIF Intro Box */
+.gif-frame-gold {
+    width: 100%; max-width: 320px; height: 200px;
+    border: 1px solid var(--blue-deep); padding: 2px;
+    margin: 0 auto 20px auto; box-shadow: 0 0 20px rgba(10, 200, 185, 0.15);
+}
+.content-gif { width: 100%; height: 100%; object-fit: cover; }
+
+/* Música */
+.music-btn {
+    position: fixed; top: 20px; right: 20px;
+    background: transparent; border: none; color: var(--gold-2);
+    cursor: pointer; z-index: 1000; transition: transform 0.2s;
+}
+.music-btn:hover { transform: scale(1.1); color: var(--gold-1); }
+
+/* Animaciones */
+@keyframes heartbeat {
+    0% { transform: scale(1); } 15% { transform: scale(1.15); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } 60% { transform: scale(1); }
+}
+@keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.5; } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }

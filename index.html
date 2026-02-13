@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Propuesta Legendaria</title>
+    
+    <!-- Librerías -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Beaufort:wght@700&family=Cinzel:wght@400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- EFECTO DE TEXTURA (Patrón de rejilla suave) -->
+    <div class="texture-overlay"></div>
+
+    <!-- PANTALLA DE CARGA (LAUNCHER) -->
+    <div id="launcher-screen">
+        <div class="launcher-content">
+            <!-- Corazón Dorado Gigante -->
+            <div class="heart-box">
+                <span class="material-icons heart-icon">favorite</span>
+                <div class="heart-glow"></div>
+            </div>
+            
+            <h1 class="launcher-title">DUO LEGENDARIO</h1>
+            <div class="divider-gold"></div>
+            <p class="launcher-subtitle">La partida está lista</p>
+            
+            <button id="btn-master-start" class="btn-hex-primary">
+                INICIAR
+                <div class="btn-border"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div id="app-container" class="hidden">
+        
+        <!-- Fondo Hextech -->
+        <div class="bg-hextech"></div>
+        <div id="particles"></div>
+        
+        <audio id="bg-music" loop>
+            <source src="warriors.mp3" type="audio/mpeg">
+        </audio>
+
+        <button id="music-toggle" class="music-btn">
+            <span class="material-icons">music_note</span>
+        </button>
+
+        <!-- Botón No -->
+        <button id="no-btn" class="btn-hex-danger">No</button>
+
+        <!-- Marco Principal (Estilo Cliente) -->
+        <main class="client-frame">
+            <!-- Decoraciones de Esquinas Doradas -->
+            <div class="deco-corner top-left"></div>
+            <div class="deco-corner top-right"></div>
+            <div class="deco-corner bottom-left"></div>
+            <div class="deco-corner bottom-right"></div>
+
+            <!-- 1. PROPUESTA -->
+            <section id="screen-start" class="screen active">
+                <div class="hero-frame">
+                    <img src="Imgen 1.jpg" alt="Nosotros" class="hero-img">
+                    <div class="frame-border"></div>
+                </div>
+                
+                <h1 class="title-main">¿Quieres ser mi<br><span class="highlight-blue">San Valentín?</span></h1>
+                
+                <div class="action-row">
+                    <button id="yes-btn" class="btn-hex-primary big">Sí, acepto</button>
+                    <div id="placeholder" class="spacer"></div>
+                </div>
+            </section>
+
+            <!-- 2. INTRODUCCIÓN -->
+            <section id="screen-intro" class="screen">
+                <div class="gif-frame-gold">
+                    <img src="Bienvenida.gif" alt="Bienvenida" class="content-gif">
+                </div>
+                <h2 class="subtitle-gold">Misión Disponible</h2>
+                <p class="lore-text">"El destino no está escrito en las estrellas, sino en los pares que encontramos."</p>
+                <button id="play-btn" class="btn-hex-primary">ACEPTAR DESAFÍO</button>
+            </section>
+
+            <!-- 3. JUEGO -->
+            <section id="screen-game" class="screen">
+                <div class="game-layout">
+                    <div class="side-panel">
+                        <img src="Izquierda.gif" alt="L" class="tall-gif">
+                    </div>
+
+                    <div id="game-grid" class="cards-grid"></div>
+
+                    <div class="side-panel">
+                        <img src="Derecha.gif" alt="R" class="tall-gif">
+                    </div>
+                </div>
+                
+                <div class="footer-game">
+                    <div class="status-label">Encuentra las Reliquias</div>
+                    <button id="skip-game-btn" class="btn-text-gold">Saltar Misión >></button>
+                </div>
+            </section>
+
+            <!-- 4. CARTA -->
+            <section id="screen-letter" class="screen">
+                <div class="parchment-box">
+                    <div class="letter-content">
+                        <span id="typewriter-text"></span><span class="typing-cursor">|</span>
+                    </div>
+                </div>
+                <button id="skip-letter-btn" class="btn-hex-secondary">Lectura Rápida</button>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
