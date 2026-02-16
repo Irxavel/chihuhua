@@ -271,11 +271,19 @@ body {
 
 /* Música */
 .music-btn {
-    position: fixed; top: 20px; right: 20px;
-    background: transparent; border: none; color: var(--gold-2);
-    cursor: pointer; z-index: 1000; transition: transform 0.2s;
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: transparent;
+    border: none;
+    color: var(--gold-2);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.2s;
 }
 .music-btn:hover { transform: scale(1.1); color: var(--gold-1); }
+
+
 
 /* Animaciones */
 @keyframes heartbeat {
