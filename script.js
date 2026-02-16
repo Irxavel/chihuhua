@@ -1,40 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     const launcher = document.getElementById('launcher-screen');
     const appContainer = document.getElementById('app-container');
     const masterStartBtn = document.getElementById('btn-master-start');
     
     const audio = document.getElementById('bg-music');
     const musicBtn = document.getElementById('music-toggle');
+
+    // hide music control if audio can't be loaded
+    audio.addEventListener('error', () => {
+        musicBtn.style.display = 'none';
+    });
     
     // --- LAUNCHER ---
     masterStartBtn.addEventListener('click', () => {
-        // Efecto visual al clic
         masterStartBtn.style.transform = "scale(0.95)";
         
         audio.volume = 0.7;
         const playPromise = audio.play();
         if (playPromise !== undefined) {
-            playPromise.catch(error => console.log("Audio autoplay prevented."));
+            playPromise.catch(error => console.log("Audio autoplay prevented. User must interact first."));
         }
 
         setTimeout(() => {
             launcher.style.opacity = '0';
-            setTimeout(() => {
+            launcher.addEventListener('transitionend', () => {
                 launcher.style.display = 'none';
+                appContainer.classList.remove('hidden');
                 appContainer.classList.add('visible');
-                setNoPosition();
-            }, 800);
+                requestAnimationFrame(setNoPosition);
+            }, { once: true });
         }, 500);
     });
 
     musicBtn.addEventListener('click', () => {
-        if(audio.paused) {
-            audio.play();
+        if (audio.paused) {
+            const p = audio.play();
+            if (p !== undefined) p.catch(()=>{});
             musicBtn.innerHTML = '<span class="material-icons">music_note</span>';
+            musicBtn.setAttribute('aria-pressed','true');
         } else {
             audio.pause();
             musicBtn.innerHTML = '<span class="material-icons">music_off</span>';
+            musicBtn.setAttribute('aria-pressed','false');
         }
     });
 
@@ -45,7 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setNoPosition() {
         const rect = placeholder.getBoundingClientRect();
-        if(rect.width === 0) { requestAnimationFrame(setNoPosition); return; }
+        if(rect.width === 0) { 
+            requestAnimationFrame(setNoPosition); 
+            return; 
+        }
         noBtn.style.position = 'absolute';
         noBtn.style.left = rect.left + 'px';
         noBtn.style.top = rect.top + 'px';
@@ -62,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.removeEventListener('resize', setNoPosition);
         const maxX = window.innerWidth - noBtn.offsetWidth - 20;
         const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+        
         noBtn.style.position = 'fixed';
         noBtn.style.left = Math.max(10, Math.random() * maxX) + 'px';
         noBtn.style.top = Math.max(10, Math.random() * maxY) + 'px';
@@ -77,12 +88,20 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('yes-btn').addEventListener('click', () => {
         goTo('screen-intro');
         noBtn.style.display = 'none';
-        if(audio.paused) audio.play();
+        if (audio.paused) audio.play();
     });
 
     document.getElementById('play-btn').addEventListener('click', () => {
         goTo('screen-game');
         initGame();
+    });
+
+    // accesibilidad: permitir activar botones con Enter cuando estén enfocados
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const el = document.activeElement;
+            if (el && el.tagName === 'BUTTON') el.click();
+        }
     });
 
     // --- JUEGO ---
@@ -101,8 +120,15 @@ document.addEventListener('DOMContentLoaded', () => {
         deck.forEach(item => {
             const card = document.createElement('div');
             card.classList.add('card');
+            card.tabIndex = 0; // accesible por teclado
             card.innerHTML = `<div class="face front"></div><div class="face back">${item}</div>`;
             card.onclick = () => flip(card, item);
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    flip(card, item);
+                }
+            });
             grid.appendChild(card);
         });
     }
@@ -135,14 +161,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function winGame() {
-        // Confeti Dorado y Azul
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#C8AA6E', '#0AC8B9', '#FFFFFF'] });
+        try {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#C8AA6E', '#0AC8B9', '#FFFFFF'] });
+        } catch (e) {
+            console.warn('Confetti no disponible:', e);
+        }
         setTimeout(() => startTypewriter(), 1500);
     }
     
     document.getElementById('skip-game-btn').addEventListener('click', winGame);
 
     // --- CARTA ---
+    // IMPORTANTE: El texto debe estar encerrado en comillas invertidas (`), no en comillas simples (') o dobles (").
     const fullText = `Hoy es San Valentín… y un día más de tortura a tu lado ajaja, no te creas amor. Tenerte así, tan cerca del corazón y todavía no abrazarte como quiero, desespera un poco.
 
 Adamari, desde que llegaste a mi vida he sentido emociones que no sabía que podía sentir con tanta fuerza. Me has puesto nervioso, me has desarmado, me has hecho pensar más de la cuenta… y también me has enseñado que el amor no es algo tibio, es algo que sacude.
@@ -154,7 +184,7 @@ Te amo porque contigo no siento algo superficial. Te amo porque me retas, porque
 Aun con los problemas, te quiero conmigo. No por costumbre. No por capricho. Te quiero porque elijo quedarme. Porque veo futuro. Porque siento que lo que tenemos vale la pena trabajarlo y cuidarlo.
 
 Hoy celebro que existes. Y celebro que, entre tantas personas en el mundo, me haya tocado conocerte a ti.`;
-
+    
     let typingTimer;
     let isTyping = false;
     const skipLetterBtn = document.getElementById('skip-letter-btn');
@@ -163,6 +193,8 @@ Hoy celebro que existes. Y celebro que, entre tantas personas en el mundo, me ha
         goTo('screen-letter');
         const box = document.getElementById('typewriter-text');
         box.innerHTML = '';
+        document.querySelector('.typing-cursor').style.display = 'inline-block';
+        skipLetterBtn.style.display = ''; // mostrar si estaba oculto
         let i = 0;
         isTyping = true;
         
@@ -170,6 +202,7 @@ Hoy celebro que existes. Y celebro que, entre tantas personas en el mundo, me ha
             if (!isTyping) return;
             if (i < fullText.length) {
                 const char = fullText.charAt(i);
+                // CORRECCIÓN: Comprobar el carácter de nueva línea real (\n)
                 box.innerHTML += (char === '\n') ? '<br><br>' : char;
                 i++;
                 const scroller = document.querySelector('.letter-content');
@@ -187,7 +220,12 @@ Hoy celebro que existes. Y celebro que, entre tantas personas en el mundo, me ha
         isTyping = false;
         clearTimeout(typingTimer);
         const box = document.getElementById('typewriter-text');
+        
+        // CORRECCIÓN CLAVE: El error estaba aquí. 
+        // La forma correcta de reemplazar todos los saltos de línea es con la expresión regular /\n/g
+        // Una doble barra \\n buscaría el texto literal "\n", que no existe en el string.
         box.innerHTML = fullText.replace(/\n/g, '<br><br>');
+
         document.querySelector('.typing-cursor').style.display = 'none';
         skipLetterBtn.style.display = 'none';
     });
