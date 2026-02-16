@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Propuesta Legendaria</title>
     
     <!-- Librerías -->
@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <!-- EFECTO DE TEXTURA (Patrón de rejilla suave) -->
     <div class="texture-overlay"></div>
 
@@ -29,7 +28,7 @@
             <div class="divider-gold"></div>
             <p class="launcher-subtitle">La partida está lista</p>
             
-            <button id="btn-master-start" class="btn-hex-primary">
+            <button id="btn-master-start" class="btn-hex-primary" aria-label="Iniciar experiencia">
                 INICIAR
                 <div class="btn-border"></div>
             </button>
@@ -37,7 +36,7 @@
     </div>
 
     <!-- CONTENIDO PRINCIPAL -->
-    <div id="app-container" class="hidden">
+    <div id="app-container">
         
         <!-- Fondo Hextech -->
         <div class="bg-hextech"></div>
@@ -46,16 +45,15 @@
         <audio id="bg-music" loop>
             <source src="warriors.mp3" type="audio/mpeg">
         </audio>
-
-        <button id="music-toggle" class="music-btn">
+        <button id="music-toggle" class="music-btn" aria-pressed="false" aria-label="Reproducir música">
             <span class="material-icons">music_note</span>
         </button>
 
         <!-- Botón No -->
-        <button id="no-btn" class="btn-hex-danger">No</button>
+        <button id="no-btn" class="btn-hex-danger" aria-label="Botón no">No</button>
 
         <!-- Marco Principal (Estilo Cliente) -->
-        <main class="client-frame">
+        <main class="client-frame" role="main">
             <!-- Decoraciones de Esquinas Doradas -->
             <div class="deco-corner top-left"></div>
             <div class="deco-corner top-right"></div>
@@ -65,14 +63,14 @@
             <!-- 1. PROPUESTA -->
             <section id="screen-start" class="screen active">
                 <div class="hero-frame">
-                    <img src="Imgen 1.jpg" alt="Nosotros" class="hero-img">
+                    <img src="Imgen 1.jpg" alt="Imagen de nosotros" class="hero-img" onerror="this.onerror=null;this.src='https://via.placeholder.com/300x420.png?text=Imagen'">
                     <div class="frame-border"></div>
                 </div>
                 
-                <h1 class="title-main">¿Quieres ser mi<br><span class="highlight-blue">San valentín chihuhua con Rabia?</span></h1>
+                <h1 class="title-main">¿Quieres ser mi<br><span class="highlight-blue">San Valentín?</span></h1>
                 
                 <div class="action-row">
-                    <button id="yes-btn" class="btn-hex-primary big">Sí, acepto</button>
+                    <button id="yes-btn" class="btn-hex-primary big" aria-label="Sí, acepto">Sí, acepto</button>
                     <div id="placeholder" class="spacer"></div>
                 </div>
             </section>
@@ -80,30 +78,28 @@
             <!-- 2. INTRODUCCIÓN -->
             <section id="screen-intro" class="screen">
                 <div class="gif-frame-gold">
-                    <img src="Bienvenida.gif" alt="Bienvenida" class="content-gif">
+                    <img src="Bienvenida.gif" alt="Bienvenida" class="content-gif" onerror="this.onerror=null;this.src='https://via.placeholder.com/320x200.png?text=Bienvenida'">
                 </div>
                 <h2 class="subtitle-gold">Misión Disponible</h2>
                 <p class="lore-text">"El destino no está escrito en las estrellas, sino en los pares que encontramos."</p>
-                <button id="play-btn" class="btn-hex-primary">ACEPTAR DESAFÍO</button>
+                <button id="play-btn" class="btn-hex-primary" aria-label="Aceptar desafío">ACEPTAR DESAFÍO</button>
             </section>
 
             <!-- 3. JUEGO -->
             <section id="screen-game" class="screen">
                 <div class="game-layout">
                     <div class="side-panel">
-                        <img src="Izquierda.gif" alt="L" class="tall-gif">
+                        <img src="Izquierda.gif" alt="L" class="tall-gif" onerror="this.onerror=null;this.src='https://via.placeholder.com/150x400.png?text=Izquierda'">
                     </div>
-
                     <div id="game-grid" class="cards-grid"></div>
-
                     <div class="side-panel">
-                        <img src="Derecha.gif" alt="R" class="tall-gif">
+                        <img src="Derecha.gif" alt="R" class="tall-gif" onerror="this.onerror=null;this.src='https://via.placeholder.com/150x400.png?text=Derecha'">
                     </div>
                 </div>
                 
                 <div class="footer-game">
                     <div class="status-label">Encuentra las Reliquias</div>
-                    <button id="skip-game-btn" class="btn-text-gold">Saltar Misión >></button>
+                    <button id="skip-game-btn" class="btn-text-gold" aria-label="Saltar misión">Saltar Misión >></button>
                 </div>
             </section>
 
@@ -114,13 +110,10 @@
                         <span id="typewriter-text"></span><span class="typing-cursor">|</span>
                     </div>
                 </div>
-                <button id="skip-letter-btn" class="btn-hex-secondary">Lectura Rápida</button>
+                <button id="skip-letter-btn" class="btn-hex-secondary" aria-label="Lectura rápida">Lectura Rápida</button>
             </section>
-
         </main>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
-
