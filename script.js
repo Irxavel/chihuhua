@@ -8,9 +8,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // hide music control if audio can't be loaded
     audio.addEventListener('error', () => {
-        musicBtn.style.display = 'none';
+        if (musicBtn) musicBtn.style.display = 'none';
     });
-    
+
+    // keep UI in sync with audio state (single button)
+    function updateMusicButton() {
+        if (!musicBtn) return;
+        const icon = audio.paused ? 'music_off' : 'music_note';
+        musicBtn.innerHTML = `<span class="material-icons">${icon}</span>`;
+        musicBtn.setAttribute('aria-pressed', (!audio.paused).toString());
+    }
+
+    // update when audio changes
+    audio.addEventListener('play', updateMusicButton);
+    audio.addEventListener('pause', updateMusicButton);
+
     // --- LAUNCHER ---
     masterStartBtn.addEventListener('click', () => {
         masterStartBtn.style.transform = "scale(0.95)";
@@ -32,18 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     });
 
-    musicBtn.addEventListener('click', () => {
-        if (audio.paused) {
-            const p = audio.play();
-            if (p !== undefined) p.catch(()=>{});
-            musicBtn.innerHTML = '<span class="material-icons">music_note</span>';
-            musicBtn.setAttribute('aria-pressed','true');
-        } else {
-            audio.pause();
-            musicBtn.innerHTML = '<span class="material-icons">music_off</span>';
-            musicBtn.setAttribute('aria-pressed','false');
-        }
-    });
+    if (musicBtn) {
+        musicBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                const p = audio.play();
+                if (p !== undefined) p.catch(()=>{});
+            } else {
+                audio.pause();
+            }
+            updateMusicButton();
+        });
+    }
 
     // --- BOTÓN NO ---
     const noBtn = document.getElementById('no-btn');
@@ -229,4 +240,5 @@ Hoy celebro que existes. Y celebro que, entre tantas personas en el mundo, me ha
         document.querySelector('.typing-cursor').style.display = 'none';
         skipLetterBtn.style.display = 'none';
     });
-});
+    // sincronizar estado inicial del botón de música con el audio
+    updateMusicButton();});
