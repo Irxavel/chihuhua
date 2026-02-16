@@ -42,6 +42,7 @@ body {
     background: radial-gradient(circle at 50% 30%, #151a21 0%, #010A13 80%);
     z-index: -2;
 }
+
 .texture-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
@@ -49,6 +50,7 @@ body {
     background-size: 20px 20px;
     pointer-events: none; z-index: -1; opacity: 0.3;
 }
+
 #particles {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     z-index: -1;
@@ -64,6 +66,7 @@ body {
     display: flex; justify-content: center; align-items: center;
     transition: opacity 0.8s ease;
 }
+
 .launcher-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
 
 /* Corazón Animado */
@@ -75,6 +78,7 @@ body {
     filter: drop-shadow(0 0 20px rgba(200, 170, 110, 0.6));
     animation: heartbeat 1.5s infinite;
 }
+
 .heart-glow {
     position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 100px; height: 100px; background: var(--gold-2);
@@ -86,10 +90,12 @@ body {
     letter-spacing: 8px; text-shadow: 0 5px 15px rgba(0,0,0,0.8);
     margin: 0;
 }
+
 .divider-gold {
     width: 200px; height: 2px; background: var(--gradient-gold);
     margin: 15px 0; box-shadow: 0 0 10px var(--gold-2);
 }
+
 .launcher-subtitle {
     color: #888; text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; margin-bottom: 40px;
 }
@@ -220,7 +226,6 @@ body {
 .game-layout { display: flex; width: 100%; height: 75%; align-items: center; justify-content: space-between; gap: 10px; }
 .side-panel { width: 20%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .tall-gif { width: 100%; height: 100%; max-height: 450px; object-fit: contain; filter: drop-shadow(0 0 5px var(--blue-glow)); }
-
 .cards-grid { width: 58%; aspect-ratio: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .card {
     background: rgba(30, 30, 30, 0.6); border: 1px solid var(--gold-3);
@@ -252,6 +257,7 @@ body {
     width: 100%; height: 100%; overflow-y: auto; text-align: left; padding: 15px;
     color: var(--gold-1); font-size: 1.1rem; line-height: 1.7;
     text-shadow: 0 1px 2px #000;
+    user-select: text;
 }
 .typing-cursor { color: var(--gold-2); animation: blink 1s infinite; font-weight: bold; }
 
@@ -273,7 +279,25 @@ body {
 
 /* Animaciones */
 @keyframes heartbeat {
-    0% { transform: scale(1); } 15% { transform: scale(1.15); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } 60% { transform: scale(1); }
+  0% { transform: scale(1); }
+  15% { transform: scale(1.15); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.08); }
+  60% { transform: scale(1); }
+  100% { transform: scale(1); }
 }
-@keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.5; } }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.15; }
+  50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.24; }
+  100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.15; }
+}
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Respecta la preferencia de reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .heart-icon, .heart-glow, .music-btn, .card, .typing-cursor, .btn-hex-primary { animation: none !important; transition: none !important; }
+  * { scroll-behavior: auto !important; }
+} 
