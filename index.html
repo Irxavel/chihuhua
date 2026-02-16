@@ -45,9 +45,6 @@
         <audio id="bg-music" loop>
             <source src="warriors.mp3" type="audio/mpeg">
         </audio>
-        <button id="music-toggle" class="music-btn" aria-pressed="false" aria-label="Reproducir música">
-            <span class="material-icons">music_note</span>
-        </button>
 
         <!-- Botón No -->
         <button id="no-btn" class="btn-hex-danger" aria-label="Botón no">No</button>
@@ -60,6 +57,10 @@
             <div class="deco-corner bottom-left"></div>
             <div class="deco-corner bottom-right"></div>
 
+            <button id="music-toggle" class="music-btn" aria-pressed="false" aria-label="Reproducir música">
+                <span class="material-icons">music_note</span>
+            </button>
+
             <!-- 1. PROPUESTA -->
             <section id="screen-start" class="screen active">
                 <div class="hero-frame">
@@ -67,7 +68,7 @@
                     <div class="frame-border"></div>
                 </div>
                 
-                <h1 class="title-main">¿Quieres ser mi<br><span class="highlight-blue">San Valentín?</span></h1>
+                <h1 class="title-main">¿Quieres ser mi<br><span class="highlight-blue">San valentín chihuhua con Rabia?</span></h1>
                 
                 <div class="action-row">
                     <button id="yes-btn" class="btn-hex-primary big" aria-label="Sí, acepto">Sí, acepto</button>
@@ -82,7 +83,9 @@
                 </div>
                 <h2 class="subtitle-gold">Misión Disponible</h2>
                 <p class="lore-text">"El destino no está escrito en las estrellas, sino en los pares que encontramos."</p>
-                <button id="play-btn" class="btn-hex-primary" aria-label="Aceptar desafío">ACEPTAR DESAFÍO</button>
+                <div class="action-row">
+                    <button id="play-btn" class="btn-hex-primary" aria-label="Aceptar desafío">ACEPTAR DESAFÍO</button>
+                </div>
             </section>
 
             <!-- 3. JUEGO -->
@@ -99,7 +102,9 @@
                 
                 <div class="footer-game">
                     <div class="status-label">Encuentra las Reliquias</div>
-                    <button id="skip-game-btn" class="btn-text-gold" aria-label="Saltar misión">Saltar Misión >></button>
+                    <div class="action-row">
+                        <button id="skip-game-btn" class="btn-text-gold" aria-label="Saltar misión">Saltar Misión >></button>
+                    </div>
                 </div>
             </section>
 
@@ -110,11 +115,12 @@
                         <span id="typewriter-text"></span><span class="typing-cursor">|</span>
                     </div>
                 </div>
-                <button id="skip-letter-btn" class="btn-hex-secondary" aria-label="Lectura rápida">Lectura Rápida</button>
+                <div class="action-row">
+                    <button id="skip-letter-btn" class="btn-hex-secondary" aria-label="Lectura rápida">Lectura Rápida</button>
+                </div>
             </section>
         </main>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-
